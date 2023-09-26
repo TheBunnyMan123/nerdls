@@ -5,7 +5,7 @@ using System.Globalization;
 class Program {
    static void Main() {
         int width = Console.WindowWidth-5;
-        string[] files = Directory.GetFileSystemEntries(AppDomain.CurrentDomain.BaseDirectory);
+        string[] files = Directory.GetFileSystemEntries(Environment.CurrentDirectory);
         string finalFiles = "";
         string tempFinalFiles = "";
         string[] tempFiles = files;
