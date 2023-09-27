@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Globalization;
-using Myrmec;
 
 class Program {
    static void Main() {
