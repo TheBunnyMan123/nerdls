@@ -16,46 +16,48 @@ class Program {
         Array.Sort<string>(tempFiles);
 
         for (int i = 0; i < (tempFiles.Length); i++) {
-            if (File.Exists(tempFiles[i])) {
-                // // create a sniffer instance.
-                // Sniffer sniffer = new Sniffer();
+            try {
+                if (File.Exists(tempFiles[i])) {
+                    // // create a sniffer instance.
+                    // Sniffer sniffer = new Sniffer();
 
-                // // populate with mata data.
-                // // FileTypes.Common contains file types that we usually see.
-                // sniffer.Populate(FileTypes.Common);
+                    // // populate with mata data.
+                    // // FileTypes.Common contains file types that we usually see.
+                    // sniffer.Populate(FileTypes.Common);
 
-                // // get file head byte, may be 20 bytes enough.
-                // byte[] fileHead = ReadFileHead();
+                    // // get file head byte, may be 20 bytes enough.
+                    // byte[] fileHead = ReadFileHead();
 
-                // // start match.
-                // List<string> results = sniffer.Match(fileHead);
-                // foreach (string type in results) {
-                //     Console.WriteLine(tempFiles[i] + ": " + type);
-                // };
-                // Console.WriteLine(tempFiles[i]);
-                // Console.WriteLine(Executable(tempFiles[i]));
-                if (Executable(tempFiles[i])) {
-                    tempFinalFiles += "\x1b[37;49;1m      " + tempFiles[i];
+                    // // start match.
+                    // List<string> results = sniffer.Match(fileHead);
+                    // foreach (string type in results) {
+                    //     Console.WriteLine(tempFiles[i] + ": " + type);
+                    // };
+                    // Console.WriteLine(tempFiles[i]);
+                    // Console.WriteLine(Executable(tempFiles[i]));
+                    if (Executable(tempFiles[i])) {
+                        tempFinalFiles += "\x1b[37;49;1m      " + tempFiles[i];
+                    }else {
+                        tempFinalFiles += "\x1b[32;49;1m      " + tempFiles[i];
+                    }
+                    if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
+                        finalFiles += "\n" + tempFinalFiles;
+                        tempFinalFiles = "";
+                    }else if (i == tempFiles.Length) {
+                        finalFiles += "\n" + tempFinalFiles;
+                        tempFinalFiles = "";
+                    }
                 }else {
-                    tempFinalFiles += "\x1b[32;49;1m      " + tempFiles[i];
+                    tempFinalFiles += "\x1b[34;49;1m      " + tempFiles[i];
+                    if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
+                        finalFiles += "\n" + tempFinalFiles;
+                        tempFinalFiles = "";
+                    }else if (i == tempFiles.Length) {
+                        finalFiles += "\n" + tempFinalFiles;
+                        tempFinalFiles = "";
+                    }
                 }
-                if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
-                    finalFiles += "\n" + tempFinalFiles;
-                    tempFinalFiles = "";
-                }else if (i == tempFiles.Length) {
-                    finalFiles += "\n" + tempFinalFiles;
-                    tempFinalFiles = "";
-                }
-            }else {
-                tempFinalFiles += "\x1b[34;49;1m      " + tempFiles[i];
-                if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
-                    finalFiles += "\n" + tempFinalFiles;
-                    tempFinalFiles = "";
-                }else if (i == tempFiles.Length) {
-                    finalFiles += "\n" + tempFinalFiles;
-                    tempFinalFiles = "";
-                }
-            }
+            }catch(System.IO.FileNotFoundException e) {}
         }
         Console.WriteLine(finalFiles);
    }
