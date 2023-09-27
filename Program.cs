@@ -18,23 +18,6 @@ class Program {
         for (int i = 0; i < (tempFiles.Length); i++) {
             try {
                 if (File.Exists(tempFiles[i])) {
-                    // // create a sniffer instance.
-                    // Sniffer sniffer = new Sniffer();
-
-                    // // populate with mata data.
-                    // // FileTypes.Common contains file types that we usually see.
-                    // sniffer.Populate(FileTypes.Common);
-
-                    // // get file head byte, may be 20 bytes enough.
-                    // byte[] fileHead = ReadFileHead();
-
-                    // // start match.
-                    // List<string> results = sniffer.Match(fileHead);
-                    // foreach (string type in results) {
-                    //     Console.WriteLine(tempFiles[i] + ": " + type);
-                    // };
-                    // Console.WriteLine(tempFiles[i]);
-                    // Console.WriteLine(Executable(tempFiles[i]));
                     if (Executable(tempFiles[i])) {
                         tempFinalFiles += "\x1b[37;49;1m      " + tempFiles[i];
                     }else {
@@ -43,7 +26,7 @@ class Program {
                     if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
                         finalFiles += "\n" + tempFinalFiles;
                         tempFinalFiles = "";
-                    }else if (i == tempFiles.Length) {
+                    }else if (i == (tempFiles.Length-1)) {
                         finalFiles += "\n" + tempFinalFiles;
                         tempFinalFiles = "";
                     }
@@ -52,12 +35,17 @@ class Program {
                     if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
                         finalFiles += "\n" + tempFinalFiles;
                         tempFinalFiles = "";
-                    }else if (i == tempFiles.Length) {
+                    }else if (i == (tempFiles.Length-1)) {
                         finalFiles += "\n" + tempFinalFiles;
                         tempFinalFiles = "";
                     }
                 }
-            }catch(System.IO.FileNotFoundException e) {}
+            }catch(System.IO.FileNotFoundException e) {
+                // Bypass warning
+                var e2 = e;
+                e = e2;
+                // Console.WriteLine(tempFiles[i] + " not found (most likely a broken link)");
+            }
         }
         Console.WriteLine(finalFiles);
    }
