@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Globalization;
 
@@ -17,11 +17,30 @@ class Program {
 
         for (int i = 0; i < (tempFiles.Length); i++) {
             try {
-                if (File.Exists(tempFiles[i])) {
+                if (File.Exists(tempFiles[i])) { //Vid: 󰕧
                     if (Executable(tempFiles[i])) {
                         tempFinalFiles += "\x1b[37;49;1m      " + tempFiles[i];
                     }else {
-                        tempFinalFiles += "\x1b[32;49;1m      " + tempFiles[i];
+                        switch(tempFiles[i].Split(".").Last().ToLower()) {
+                            case "png" or "tif" or "tiff" or "bmp" or "jpg" or "jpeg" or "gif" or "eps":
+                                tempFinalFiles += "\x1b[35;49;1m      " + tempFiles[i];
+                                break;
+                            case "swf" or "mp4" or "mov" or "avi" or "wmv" or "avchd" or "webm" or "flv":
+                                tempFinalFiles += "\x1b[35;49;1m      " + tempFiles[i];
+                                break;
+                            case "pcm" or "wav" or "aiff" or "mp3" or "aac" or "ogg" or "wma" or "flac" or "alac" or "midi":
+                                tempFinalFiles += "\x1b[35;49;1m      " + tempFiles[i];
+                                break;
+                            case "zip" or "rar" or "gz" or "7z" or "cab" or "xz" or "tar" or "kgb" or "pea" or "bz2" or "lz" or "lzma" or "lzo" or "zstd" or "tb2" or "tbz" or "tbz2" or "tz2" or "taz" or "tgz" or "tlz" or "txz" or "tz" or "taz" or "tzst":
+                                tempFinalFiles += "\x1b[36;49;1m    󰞹  " + tempFiles[i];
+                                break;
+                            case "iso" or "dmg" or "img":
+                                tempFinalFiles += "\x1b[36;49;1m    󰗮  " + tempFiles[i];
+                                break;
+                            default:
+                                tempFinalFiles += "\x1b[32;49;1m      " + tempFiles[i];
+                                break;
+                        }
                     }
                     if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
                         finalFiles += "\n" + tempFinalFiles;
@@ -31,7 +50,7 @@ class Program {
                         tempFinalFiles = "";
                     }
                 }else {
-                    tempFinalFiles += "\x1b[34;49;1m      " + tempFiles[i];
+                    tempFinalFiles += "\x1b[34;49;1m      " + tempFiles[i];
                     if (new StringInfo(tempFinalFiles).LengthInTextElements >= width-10-tempFiles[i].Length) {
                         finalFiles += "\n" + tempFinalFiles;
                         tempFinalFiles = "";
