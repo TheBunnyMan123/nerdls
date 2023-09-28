@@ -1,3 +1,4 @@
 # nerdls
-ls using nerdls icons
-this requires a nerd font
+LS but with nerdfont icons.
+
+This requires nerdfonts
