@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Globalization;
 
@@ -16,6 +16,7 @@ class Program {
         Array.Sort<string>(tempFiles);
 
         for (int i = 0; i < (tempFiles.Length); i++) {
+            #pragma warning disable CS0168 // Disable unused variable warning
             try {
                 if (File.Exists(tempFiles[i])) { //Vid: 󰕧
                     if (Executable(tempFiles[i])) {
@@ -60,24 +61,25 @@ class Program {
                     }
                 }
             }catch(System.IO.FileNotFoundException e) {
-                // Bypass warning
-                var e2 = e;
-                e = e2;
                 // Console.WriteLine(tempFiles[i] + " not found (most likely a broken link)");
             }
         }
         Console.WriteLine(finalFiles);
    }
 
-    static bool Executable(string filePath)
-    {
-        var firstBytes = new byte[13];
-        using(var fileStream = File.Open(filePath, FileMode.Open))
-        {
-            fileStream.Read(firstBytes, 0, 12);
+    static bool Executable(string filePath) {
+        try {
+            var firstBytes = new byte[13];
+            using(var fileStream = File.Open(filePath, FileMode.Open))
+            {
+                fileStream.Read(firstBytes, 0, 12);
+            }
+            // Console.WriteLine(System.Text.Encoding.UTF8.GetString(firstBytes));
+            var Bytes = System.Text.Encoding.UTF8.GetString(firstBytes);
+            return (Bytes.Contains("ELF") || Bytes.Contains("MZ") || Bytes.Contains("FEEDFACE") || Bytes.Contains("FEEDFACF") || Bytes.Contains("sh"));
+        } catch(System.UnauthorizedAccessException e) {
+            #pragma warning disable CS0168 // Disable warning "The variable 'e' is declared but never used"
+            return false;
         }
-        // Console.WriteLine(System.Text.Encoding.UTF8.GetString(firstBytes));
-        var Bytes = System.Text.Encoding.UTF8.GetString(firstBytes);
-        return (Bytes.Contains("ELF") || Bytes.Contains("MZ") || Bytes.Contains("FEEDFACE") || Bytes.Contains("FEEDFACF") || Bytes.Contains("sh"));
     }
 }
